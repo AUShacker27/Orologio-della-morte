@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L’Orologio della Morte</title>
+<meta name="description" content="Rispondi a dieci domande e scopri quanto ti resta, secondo la Morte. Una stima per gioco, non un calcolo medico.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--nero:#050403;--carbone:#15100b;--brace:#ff6a00;--fiamma:#ff9a3d;--ossa:#efe6d2;--cenere:#9a8a76}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--nero);color:var(--ossa);font-family:"Spectral",Georgia,serif;font-size:18px;line-height:1.65}
+h1,h2,h3{font-family:"Pirata One","Spectral",serif;font-weight:400;margin:0;line-height:1.05}
+a{color:var(--fiamma)}
+:focus-visible{outline:3px solid var(--fiamma);outline-offset:3px}
+
+.hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:end;gap:10px;max-width:1100px;min-height:92vh;margin:0 auto;padding:0 22px}
+.hero-testo{padding:60px 0 80px}
+.hero h1{font-size:clamp(3.4rem,9vw,6.6rem);color:var(--brace);text-shadow:0 0 40px rgba(255,106,0,.35)}
+.hero p{max-width:30em;margin:22px 0 30px;color:var(--ossa)}
+.reaper{width:100%;height:auto;max-height:92vh;-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent)}
+.occhi{animation:brace 3.2s ease-in-out infinite}
+@keyframes brace{0%,100%{opacity:1}50%{opacity:.45}}
+
+.btn{display:inline-block;border:0;cursor:pointer;background:var(--brace);color:var(--nero);font:400 1.5rem "Pirata One",serif;padding:14px 34px;text-decoration:none;clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 14px,100% calc(100% - 14px),calc(100% - 14px) 100%,14px 100%,0 calc(100% - 14px),0 14px)}
+.btn:hover{background:var(--fiamma)}
+.btn.secondario{background:transparent;color:var(--fiamma);box-shadow:inset 0 0 0 2px var(--brace)}
+
+main{max-width:760px;margin:0 auto;padding:0 22px 90px}
+.scheda{border-left:4px solid var(--brace);background:var(--carbone);padding:30px 26px;margin-top:24px}
+.scheda h2{font-size:2.6rem;color:var(--brace);margin-bottom:6px}
+.scheda>p{margin:0 0 22px;color:var(--cenere)}
+form{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+label{display:flex;flex-direction:column;gap:6px;font-size:.95rem;color:var(--cenere)}
+label.largo,form .btn{grid-column:1/-1}
+form .btn{justify-self:start}
+input,select,textarea{font:inherit;font-size:1.05rem;color:var(--ossa);background:var(--nero);border:1px solid #4a3622;padding:11px 12px;width:100%;border-radius:0}
+input:focus,select:focus,textarea:focus{border-color:var(--brace)}
+textarea{min-height:96px;resize:vertical}
+@media(max-width:620px){form{grid-template-columns:1fr}}
+
+#risultato h3{font-size:1.8rem;color:var(--fiamma);margin:34px 0 12px}
+.conto{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;text-align:center;margin:10px 0}
+.conto div{background:var(--nero);padding:14px 4px 10px;border-bottom:3px solid var(--brace)}
+.conto b{display:block;font:400 clamp(2rem,8vw,3.6rem) "Pirata One",serif;color:var(--brace);text-shadow:0 0 22px rgba(255,106,0,.55);font-variant-numeric:tabular-nums;line-height:1}
+.conto span{font-size:.85rem;color:var(--cenere)}
+#data{font-style:italic;color:var(--ossa);margin:14px 0 0}
+#barre{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+#barre li{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:.98rem}
+#barre .v{font-variant-numeric:tabular-nums}
+#barre .pista{grid-column:1/-1;height:10px;background:var(--nero)}
+#barre .pista i{display:block;height:100%}
+#barre .perde i{background:var(--brace)}
+#barre .guadagna i{background:var(--ossa)}
+#ia{border-left:4px solid var(--ossa);padding:4px 0 4px 18px;font-style:italic;white-space:pre-line;margin:0}
+.avviso{margin-top:30px;font-size:.88rem;color:var(--cenere)}
+footer{max-width:760px;margin:0 auto;padding:0 22px 50px;font-size:.85rem;color:var(--cenere)}
+
+@media(max-width:760px){
+ .hero{grid-template-columns:1fr;min-height:auto;gap:0}
+ .reaper{order:-1;max-height:52vh;margin-top:14px}
+ .hero-testo{padding:0 0 50px}
+ body{font-size:17px}
+}
+@media(prefers-reduced-motion:reduce){.occhi{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-testo">
+    <h1>Quanto ti resta?</h1>
+    <p>Rispondi a dieci domande sulle tue abitudini. La Morte fa i conti, ti mostra il conto alla rovescia e ti dice cosa ti ruba il tempo.</p>
+    <a class="btn" href="#questionario">Inizia il conto</a>
+  </div>
+
+  <svg class="reaper" viewBox="0 0 400 560" role="img" aria-label="Lo spirito della morte con la falce davanti a una luna arancione">
+    <defs>
+      <radialGradient id="luna" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#ffa23d"/><stop offset=".62" stop-color="#e85a00"/><stop offset="1" stop-color="#e85a00" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="alone" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <circle cx="205" cy="235" r="195" fill="url(#luna)"/>
+    <!-- manico della falce -->
+    <line x1="322" y1="36" x2="292" y2="548" stroke="#7a4313" stroke-width="7" stroke-linecap="round"/>
+    <!-- lama -->
+    <path d="M322 36C250 14 168 56 112 134C186 88 252 76 318 82Z" fill="#e9e2d0" stroke="#ff6a00" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M300 48C240 40 176 74 138 116" fill="none" stroke="#9a8a76" stroke-width="2"/>
+    <!-- veste -->
+    <path d="M200 104C148 104 118 148 116 206C88 304 58 424 36 548L364 548C342 424 312 304 284 206C282 148 252 104 200 104Z" fill="#000" stroke="#ff6a00" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M150 548C156 470 170 380 190 300M250 548C244 470 230 380 210 300" fill="none" stroke="#ff6a00" stroke-opacity=".35" stroke-width="1.5"/>
+    <!-- cappuccio e volto -->
+    <path d="M200 124C166 124 146 156 148 196C150 232 176 252 200 252C224 252 250 232 252 196C254 156 234 124 200 124Z" fill="#0b0805" stroke="#ff6a00" stroke-opacity=".6" stroke-width="2"/>
+    <ellipse cx="200" cy="200" rx="30" ry="38" fill="#1b1611"/>
+    <g class="occhi" filter="url(#alone)">
+      <ellipse cx="186" cy="186" rx="7" ry="9" fill="#ff6a00"/>
+      <ellipse cx="214" cy="186" rx="7" ry="9" fill="#ff6a00"/>
+    </g>
+    <path d="M200 198l-5 14h10z" fill="#000"/>
+    <path d="M184 226h32M190 222v8M200 222v8M210 222v8" stroke="#9a8a76" stroke-width="2" stroke-linecap="round"/>
+    <!-- braccio e mano che stringono la falce -->
+    <path d="M266 232C292 252 302 280 306 304L288 316C280 292 268 272 248 262Z" fill="#000" stroke="#ff6a00" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M296 296q12-7 20 3l-2 16q-12 7-20-3z" fill="#efe6d2"/>
+    <path d="M300 302v10M306 300v12M312 302v10" stroke="#9a8a76" stroke-width="1.5"/>
+  </svg>
+</header>
+
+<main>
+  <section class="scheda" id="questionario">
+    <h2>La tua cartella</h2>
+    <p>Nessun dato viene salvato. Tutto resta nel tuo telefono, tranne il riassunto che serve alla Morte per commentare.</p>
+    <form id="form">
+      <label>Data di nascita<input type="date" name="nascita" required max="2025-12-31"></label>
+      <label>Sesso
+        <select name="sesso"><option value="m">Uomo</option><option value="f">Donna</option></select>
+      </label>
+      <label>Altezza (cm)<input type="number" name="altezza" min="100" max="230" value="175" required></label>
+      <label>Peso (kg)<input type="number" name="peso" min="30" max="250" value="70" required></label>
+      <label>Fumo
+        <select name="fumo"><option value="mai">Non ho mai fumato</option><option value="ex">Ho smesso</option><option value="occasionale">Ogni tanto</option><option value="quotidiano">Ogni giorno</option></select>
+      </label>
+      <label>Alcol
+        <select name="alcol"><option value="nessuno">Quasi mai</option><option value="moderato">Un bicchiere al giorno o meno</option><option value="alto">Più di un bicchiere al giorno</option></select>
+      </label>
+      <label>Movimento
+        <select name="sport"><option value="nessuno">Quasi nessuno</option><option value="poco">1-2 volte a settimana</option><option value="spesso">3-5 volte a settimana</option><option value="ogni">Ogni giorno</option></select>
+      </label>
+      <label>Sonno
+        <select name="sonno"><option value="poco">Meno di 5 ore</option><option value="scarso">5-6 ore</option><option value="giusto" selected>7-8 ore</option><option value="troppo">9 ore o più</option></select>
+      </label>
+      <label>Alimentazione
+        <select name="dieta"><option value="scarsa">Cibo spazzatura quasi sempre</option><option value="media" selected>Mista</option><option value="sana">Frutta, verdura e cibi veri</option></select>
+      </label>
+      <label>Stress
+        <select name="stress"><option value="basso">Basso</option><option value="medio" selected>Medio</option><option value="alto">Alto</option></select>
+      </label>
+      <label class="largo">Racconta una tua giornata tipo (facoltativo)
+        <textarea name="nota" maxlength="400" placeholder="Lavoro seduto fino alle 18, poi divano e serie TV…"></textarea>
+      </label>
+      <button class="btn" type="submit">Scopri quanto ti resta</button>
+    </form>
+  </section>
+
+  <section class="scheda" id="risultato" hidden aria-live="polite">
+    <h2>Il tempo che ti resta</h2>
+    <div class="conto">
+      <div><b id="c-anni">0</b><span>anni</span></div>
+      <div><b id="c-giorni">0</b><span>giorni</span></div>
+      <div><b id="c-ore">0</b><span>ore</span></div>
+      <div><b id="c-min">0</b><span>minuti</span></div>
+      <div><b id="c-sec">0</b><span>secondi</span></div>
+    </div>
+    <p id="data"></p>
+
+    <h3>Cosa ti ruba il tempo e cosa te lo regala</h3>
+    <ul id="barre"></ul>
+
+    <h3>Il verdetto della Morte</h3>
+    <p id="ia"></p>
+
+    <p class="avviso">Questa è una stima per gioco, costruita con medie semplificate. Non è una previsione né un parere medico. Se l’argomento ti pesa, parlane con una persona di fiducia o con il tuo medico.</p>
+    <p><button class="btn secondario" type="button" id="rifai">Rifai il calcolo</button></p>
+  </section>
+</main>
+
+<footer>L’Orologio della Morte è un progetto di intrattenimento.</footer>
+
+<script>
+const $ = s => document.querySelector(s);
+const form = $("#form");
+let timer;
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(form));
+  const nascita = new Date(d.nascita);
+  if (isNaN(nascita) || nascita > new Date()) return alert("Controlla la data di nascita.");
+  const p = calcola(d, nascita);
+  mostra(p);
+  avviaConto(p.fine);
+  await chiediIA(d, p);
+});
+
+$("#rifai").addEventListener("click", () => {
+  clearInterval(timer);
+  $("#risultato").hidden = true;
+  $("#questionario").scrollIntoView();
+});
+
+function calcola(d, nascita) {
+  const base = d.sesso === "f" ? 85 : 81;
+  const h = +d.altezza / 100, bmi = +d.peso / (h * h);
+  const effetti = [
+    ["Fumo", { mai: 0, ex: -1, occasionale: -4, quotidiano: -9 }[d.fumo]],
+    ["Alcol", { nessuno: 0, moderato: -0.5, alto: -4 }[d.alcol]],
+    ["Movimento", { nessuno: -3, poco: 1, spesso: 3, ogni: 4 }[d.sport]],
+    ["Sonno", { poco: -3, scarso: -1, giusto: 1, troppo: -1.5 }[d.sonno]],
+    ["Alimentazione", { scarsa: -4, media: 0, sana: 3 }[d.dieta]],
+    ["Stress", { basso: 1, medio: 0, alto: -3 }[d.stress]],
+    ["Peso", bmi < 18.5 ? -2 : bmi < 25 ? 1 : bmi < 30 ? -1.5 : bmi < 35 ? -4 : -7]
+  ].map(([nome, anni]) => ({ nome, anni }));
+  const aspettativa = base + effetti.reduce((t, x) => t + x.anni, 0);
+  const anno = 365.25 * 86400000;
+  let fine = nascita.getTime() + aspettativa * anno;
+  const minimo = Date.now() + anno;
+  if (fine < minimo) fine = minimo;
+  const eta = Math.floor((Date.now() - nascita) / anno);
+  return { effetti, aspettativa: Math.round(aspettativa * 10) / 10, fine, eta };
+}
+
+function mostra(p) {
+  $("#risultato").hidden = false;
+  $("#data").textContent = "Data stimata: " + new Date(p.fine).toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" }) + ". Aspettativa calcolata: " + p.aspettativa + " anni.";
+  $("#barre").innerHTML = p.effetti.map(x => {
+    const perde = x.anni < 0, w = Math.min(100, Math.abs(x.anni) / 9 * 100);
+    const segno = x.anni > 0 ? "+" : x.anni < 0 ? "−" : "";
+    return `<li class="${perde ? "perde" : "guadagna"}"><span>${x.nome}</span><span class="v">${segno}${Math.abs(x.anni)} anni</span><span class="pista"><i style="width:${w}%"></i></span></li>`;
+  }).join("");
+  $("#risultato").scrollIntoView();
+}
+
+function avviaConto(fine) {
+  clearInterval(timer);
+  const tick = () => {
+    let s = Math.max(0, Math.floor((fine - Date.now()) / 1000));
+    const y = Math.floor(s / 31557600); s -= y * 31557600;
+    const g = Math.floor(s / 86400); s -= g * 86400;
+    const o = Math.floor(s / 3600); s -= o * 3600;
+    const m = Math.floor(s / 60); s -= m * 60;
+    $("#c-anni").textContent = y;
+    $("#c-giorni").textContent = g;
+    $("#c-ore").textContent = String(o).padStart(2, "0");
+    $("#c-min").textContent = String(m).padStart(2, "0");
+    $("#c-sec").textContent = String(s).padStart(2, "0");
+  };
+  tick();
+  timer = setInterval(tick, 1000);
+}
+
+async function chiediIA(d, p) {
+  const box = $("#ia");
+  box.textContent = "La Morte sta sfogliando la tua cartella…";
+  try {
+    const r = await fetch("/api/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ eta: p.eta, aspettativa: p.aspettativa, effetti: p.effetti, nota: (d.nota || "").slice(0, 400) })
+    });
+    if (!r.ok) throw new Error("api");
+    const j = await r.json();
+    box.textContent = j.testo;
+  } catch (err) {
+    box.textContent = verdettoLocale(p);
+  }
+}
+
+function verdettoLocale(p) {
+  const ord = [...p.effetti].sort((a, b) => a.anni - b.anni);
+  const peggio = ord[0], meglio = ord[ord.length - 1];
+  let t = "Ti ho guardato bene. ";
+  if (peggio.anni < 0) t += "Il tuo punto debole è «" + peggio.nome.toLowerCase() + "»: da solo ti costa " + Math.abs(peggio.anni) + " anni. ";
+  if (meglio.anni > 0) t += "Ti salva «" + meglio.nome.toLowerCase() + "», che ti regala " + meglio.anni + " anni. ";
+  t += "Cambia la prima e tieniti stretta la seconda, e forse ci rivedremo più tardi del previsto.";
+  return t;
+}
+</script>
+</body>
+</html>
